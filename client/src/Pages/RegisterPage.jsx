@@ -18,7 +18,6 @@ const RegisterPage = () => {
     } catch (e) {
       alert("Registration failed. Please try again later");
     }
-   
   };
   return (
     <div className="mt-4 grow flex items-center justify-around">
