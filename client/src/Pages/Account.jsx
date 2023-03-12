@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import PlacesPage from "../../components/PlacesPage";
-import { UserContext } from "../../components/UserContext";
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import PlacesPage from '../../components/PlacesPage';
+import { UserContext } from '../../components/UserContext';
 
 const Account = () => {
   const [redirect, setRedirect] = useState(false);
@@ -10,49 +10,52 @@ const Account = () => {
   let { subpage } = useParams();
   let navigate = useNavigate();
   if (subpage === undefined) {
-    subpage = "profile";
+    subpage = 'profile';
   }
   async function Logout() {
-    await axios.post("/logout");
+    await axios.post('/logout');
     setRedirect(true);
     setUser(null);
   }
 
   useEffect(() => {
     if (redirect) {
-      return navigate("/");
+      return navigate('/');
     }
   }, [redirect]);
 
   if (!ready) {
-    return "Loading....";
+    return 'Loading....';
   }
 
   if (ready && !user && !redirect) {
-    return <Navigate to={"/Login"} />;
+    return <Navigate to={'/Login'} />;
   }
 
   function linkClasses(type = null) {
-    let classes = "py-2 px-6 inline-flex gap-1 rounded-full transition-all";
+    let classes = 'py-2 px-6 inline-flex gap-1 rounded-full transition-all';
     if (type === subpage) {
-      classes += " bg-primary text-white";
+      classes += ' bg-primary text-white';
     } else {
-      classes += ' bg-gray-200'
+      classes += ' bg-gray-200';
     }
     return classes;
   }
 
   return (
     <div>
-      <nav className="w-full flex mt-8 gap-2 justify-center mb-8">
-        <Link to={"/account"} className={linkClasses("profile")}>
+      <nav className="mt-8 mb-8 flex w-full justify-center gap-2">
+        <Link
+          to={'/account'}
+          className={linkClasses('profile')}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -62,14 +65,17 @@ const Account = () => {
           </svg>
           My profile
         </Link>
-        <Link to={"/account/bookings"} className={linkClasses("bookings")}>
+        <Link
+          to={'/account/bookings'}
+          className={linkClasses('bookings')}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -79,14 +85,17 @@ const Account = () => {
           </svg>
           My bookings
         </Link>
-        <Link to={"/account/places"} className={linkClasses("places")}>
+        <Link
+          to={'/account/places'}
+          className={linkClasses('places')}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -97,15 +106,18 @@ const Account = () => {
           My accommodations
         </Link>
       </nav>
-      {subpage === "profile" && (
-        <div className="text-center max-w-lg mx-auto">
+      {subpage === 'profile' && (
+        <div className="mx-auto max-w-lg text-center">
           Logged in as {user?.name} ({user?.email}) <br />
-          <button onClick={Logout} className="primary max-w-sm mt-2">
+          <button
+            onClick={Logout}
+            className="primary mt-2 max-w-sm"
+          >
             Logout
           </button>
         </div>
       )}
-      {subpage === "places" && (
+      {subpage === 'places' && (
         <div>
           <PlacesPage />
         </div>

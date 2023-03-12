@@ -2,11 +2,15 @@ const express = require("express");
 const db = require("./connections/db");
 const cors = require("cors");
 const User = require("./models/user");
-const bcrypt = require("bcryptjs");
 const app = express();
+const fs = require("fs");
+const multer = require("multer");
+const download = require("image-downloader");
+const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
 app.use(
   cors({
@@ -76,4 +80,31 @@ app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
-app.listen(3000, () => console.log(`App listening on port 3000`));
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+
+  const newName = "photo" + Date.now() + ".jpg";
+  const options = {
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  };
+  await download.image(options);
+  res.json(newName);
+});
+
+const photosMiddleware = multer({ dest: "uploads/" });
+
+app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads", ""));
+  }
+  res.json(uploadedFiles);
+});
+
+app.listen(3000);

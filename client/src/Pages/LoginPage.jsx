@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { UserContext } from "./../../components/UserContext";
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from './../../components/UserContext';
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   let navigate = useNavigate();
   const { setUser } = useContext(UserContext);
@@ -12,26 +12,29 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("/login", { email, password });
+      const { data } = await axios.post('/login', { email, password });
       setUser(data);
-      alert("Login successful");
+      alert('Login successful');
       setRedirect(true);
     } catch (e) {
-      alert("Login failed");
+      alert('Login failed');
     }
   };
 
   useEffect(() => {
     if (redirect) {
-      return navigate("/");
+      return navigate('/');
     }
   }, [redirect]);
 
   return (
-    <div className="mt-4 grow flex items-center justify-around">
+    <div className="mt-4 flex grow items-center justify-around">
       <div className="mb-64">
-        <h1 className="text-4xl text-center mb-4">Login</h1>
-        <form onSubmit={handleLogin} className="max-w-md mx-auto">
+        <h1 className="mb-4 text-center text-4xl">Login</h1>
+        <form
+          onSubmit={handleLogin}
+          className="mx-auto max-w-md"
+        >
           <input
             type="email"
             name="email"
@@ -46,15 +49,21 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="primary" type="submit">
+          <button
+            className="primary"
+            type="submit"
+          >
             Login
           </button>
-          <div className="text-center py-2 text-gray-500">
+          <div className="py-2 text-center text-gray-500">
             <p>
-              Don't have an account yet?{" "}
-              <Link to={"/register"} className="underline text-black">
+              Don&apos;t have an account yet?{' '}
+              <Link
+                to={'/register'}
+                className="text-black underline"
+              >
                 Register now
-              </Link>{" "}
+              </Link>{' '}
             </p>
           </div>
         </form>

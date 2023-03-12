@@ -1,29 +1,32 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/register", {
+      await axios.post('/register', {
         name,
         email,
         password,
       });
-      alert("Registration successful. Now You Can login");
+      alert('Registration successful. Now You Can login');
     } catch (e) {
-      alert("Registration failed. Please try again later");
+      alert('Registration failed. Please try again later');
     }
   };
   return (
-    <div className="mt-4 grow flex items-center justify-around">
+    <div className="mt-4 flex grow items-center justify-around">
       <div className="mb-64">
-        <h1 className="text-4xl text-center mb-4">Register</h1>
-        <form className="max-w-md mx-auto" onSubmit={registerUser}>
+        <h1 className="mb-4 text-center text-4xl">Register</h1>
+        <form
+          className="mx-auto max-w-md"
+          onSubmit={registerUser}
+        >
           <input
             type="text"
             placeholder="John Doe"
@@ -44,15 +47,21 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="primary" type="submit">
+          <button
+            className="primary"
+            type="submit"
+          >
             Register
           </button>
-          <div className="text-center py-2 text-gray-500">
+          <div className="py-2 text-center text-gray-500">
             <p>
-              Already a member?{" "}
-              <Link to={"/Login"} className="underline text-black">
+              Already a member?{' '}
+              <Link
+                to={'/Login'}
+                className="text-black underline"
+              >
                 Login
-              </Link>{" "}
+              </Link>{' '}
             </p>
           </div>
         </form>
