@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Perks from './Perks';
 import PhotosUploader from './PhotosUploader';
 const PlacesPage = () => {
@@ -13,8 +13,17 @@ const PlacesPage = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
+  const [redirect, setRedirect] = useState(false);
   const { action } = useParams();
+  const navigate = useNavigate();
 
+ useEffect(() => {
+    if (redirect) {
+      return navigate('/account/places');
+    }
+  }, [redirect]);
+
+  
   function inputHeader(text) {
     return <h2 className="mt-4 text-2xl">{text}</h2>;
   }
@@ -32,12 +41,23 @@ const PlacesPage = () => {
     );
   }
 
-  const addNewPlace = (e) => {
+  const addNewPlace = async (e) => {
     e.preventDefault();
-  axios.post('/places', data);
+    const { data } = await axios.post('/places', {
+      title,
+      address,
+      addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    setRedirect(true);
+  };
 
-  }
-
+ 
   return (
     <div>
       {action !== 'new' && (
