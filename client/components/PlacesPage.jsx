@@ -1,167 +1,66 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import Perks from './Perks';
-import PhotosUploader from './PhotosUploader';
+import { Link } from 'react-router-dom';
+import AccountNav from './AccountNav';
+
 const PlacesPage = () => {
-  const [addedPhotos, setAddedPhotos] = useState([]);
-  const [title, setTitle] = useState('');
-  const [address, setAddress] = useState('');
-  const [description, setDescription] = useState('');
-  const [perks, setPerks] = useState('');
-  const [extraInfo, setExtraInfo] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [maxGuests, setMaxGuests] = useState(1);
-  const [redirect, setRedirect] = useState(false);
-  const { action } = useParams();
-  const navigate = useNavigate();
-
- useEffect(() => {
-    if (redirect) {
-      return navigate('/account/places');
-    }
-  }, [redirect]);
-
-  
-  function inputHeader(text) {
-    return <h2 className="mt-4 text-2xl">{text}</h2>;
-  }
-
-  function inputDescription(text) {
-    return <p className="text-sm text-gray-500">{text}</p>;
-  }
-
-  function preInput(header, description) {
-    return (
-      <>
-        {inputHeader(header)}
-        {inputDescription(description)}
-      </>
-    );
-  }
-
-  const addNewPlace = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.post('/places', {
-      title,
-      address,
-      addedPhotos,
-      description,
-      perks,
-      extraInfo,
-      checkIn,
-      checkOut,
-      maxGuests,
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    axios.get('/user-places').then(({ data }) => {
+      setPlaces(data);
     });
-    setRedirect(true);
-  };
+  }, []);
 
- 
   return (
     <div>
-      {action !== 'new' && (
-        <div className="text-center">
-          <Link
-            className="inline-flex gap-1 rounded-full bg-primary py-2 px-6 text-white"
-            to={'/account/places/new'}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg>
-            Add new places
-          </Link>
-        </div>
-      )}
-      {action === 'new' && (
-        <div>
-          {' '}
-          <form onSubmit={addNewPlace}>
-            {preInput('Title', 'Title for your place. should be short & catchy as in advertisement')}
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="title, for example: My lovely apt"
-            />
-            {preInput('Address', 'Address to this place')}
+      <AccountNav />
 
-            <input
-              type="text"
-              placeholder="address"
-              onChange={(e) => setAddress(e.target.value)}
-              value={address}
+      <div className="text-center">
+        <Link
+          className="inline-flex gap-1 rounded-full bg-primary py-2 px-6 text-white"
+          to={'/account/places/new'}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
             />
-            {preInput('Photos', 'more = better')}
-            <PhotosUploader
-              addedPhotos={addedPhotos}
-              onChange={setAddedPhotos}
-            />
-            {preInput('Description', 'description of the place')}
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {preInput('Perks', 'select all the perks of your place')}
-            <Perks
-              selected={perks}
-              onChange={setPerks}
-            />
-            {preInput('Extra info', 'house rules, etc')}
-            <textarea
-              value={extraInfo}
-              onChange={(e) => setExtraInfo(e.target.value)}
-            />
-            {preInput(
-              'Check in&out times',
-              'add check in and out times, remember to have some time window forcleaning the room between guests',
-            )}
-            <div className="grid gap-2 sm:grid-cols-3">
-              <div>
-                <h3 className="mt-2 -mb-1">Check in time</h3>
-                <input
-                  type="text"
-                  placeholder="14"
-                  value={checkIn}
-                  onChange={(e) => setCheckIn(e.target.value)}
-                />
+          </svg>
+          Add new places
+        </Link>
+      </div>
+      <div className='mt-4'>
+        {places.length > 0 &&
+          places.map((place, i) => (
+            <Link
+              to={'/account/places/' + place._id}
+              key={i}
+              className="flex cursor-pointer gap-4 rounded-2xl bg-gray-100 p-4"
+            >
+              <div className="flex h-32 w-32 shrink-0 grow bg-gray-300">
+                {place.photos.length > 0 && (
+                  <img
+                    src={'http://localhost:3000/uploads/' + place.photos[0]}
+                    className='object-cover'
+                    alt=""
+                  />
+                )}
               </div>
-              <div>
-                <h3 className="mt-2 -mb-1">Check out time</h3>
-                <input
-                  type="text"
-                  placeholder="11"
-                  value={checkOut}
-                  onChange={(e) => setCheckOut(e.target.value)}
-                />
+              <div className="shrink grow-0">
+                <h2 className="text-xl">{place.title}</h2>
+                <p className="mt-2 text-sm">{place.description}</p>
               </div>
-              <div>
-                <h3 className="mt-2 -mb-1">Max number of guests</h3>
-                <input
-                  type="text"
-                  value={maxGuests}
-                  onChange={(e) => setMaxGuests(e.target.value)}
-                />
-              </div>
-            </div>
-            <div>
-              <button className="primary my-4">Save</button>
-            </div>
-          </form>
-        </div>
-      )}
-      myplaces
+            </Link>
+          ))}
+      </div>
     </div>
   );
 };

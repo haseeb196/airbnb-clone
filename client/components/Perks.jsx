@@ -12,6 +12,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('wifi')}
           name="wifi"
           onChange={handleCbClick}
         />
@@ -34,6 +35,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('parking')}
           name="parking"
           onChange={handleCbClick}
         />
@@ -56,6 +58,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('tv')}
           name="tv"
           onChange={handleCbClick}
         />
@@ -78,6 +81,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('radio')}
           name="radio"
           onChange={handleCbClick}
         />
@@ -100,6 +104,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('pets')}
           name="pets"
           onChange={handleCbClick}
         />
@@ -122,6 +127,7 @@ const Perks = ({ selected, onChange }) => {
       <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
+          checked={selected.includes('entrance')}
           name="entrance"
           onChange={handleCbClick}
         />
