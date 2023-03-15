@@ -43,8 +43,8 @@ const PhotosUploader = ({ onChange, addedPhotos }) => {
 
   const selectAsMainPhoto = (e, filename) => {
     e.preventDefault();
-    
-    onChange([filename, ...addedPhotos.filter(photo => photo !== filename)]);
+
+    onChange([filename, ...addedPhotos.filter((photo) => photo !== filename)]);
   };
 
   return (

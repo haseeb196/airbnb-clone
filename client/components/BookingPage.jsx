@@ -26,7 +26,7 @@ const BookingPage = () => {
     <div className="my-8">
       <h1 className="text-3xl">{booking.place.title}</h1>
       <AddressLink className="my-2 block">{booking.place.address}</AddressLink>
-      <div className="my-6 flex justify-between rounded-2xl bg-gray-200 p-6 items-center">
+      <div className="my-6 flex items-center justify-between rounded-2xl bg-gray-200 p-6">
         <div>
           {' '}
           <h2 className="mb-4 text-2xl">Your booking Information</h2>

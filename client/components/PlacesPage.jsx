@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AccountNav from './AccountNav';
-import PlaceImg from "./PlaceImg"
+import PlaceImg from './PlaceImg';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -38,7 +38,7 @@ const PlacesPage = () => {
           Add new places
         </Link>
       </div>
-      <div className='mt-4'>
+      <div className="mt-4">
         {places.length > 0 &&
           places.map((place, i) => (
             <Link

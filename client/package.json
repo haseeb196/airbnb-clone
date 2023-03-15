@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "format": "prettier -c src/ components/ --ignore-path .gitignore",
-    "format:fix": "prettier -w src/ --ignore-path .gitignore",
+    "format:fix": "prettier -w src/ components/ --ignore-path .gitignore",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -15,7 +15,7 @@ const PlacesFormPage = () => {
   const [checkOut, setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
-  const [price, setPrice] =  useState(100)
+  const [price, setPrice] = useState(100);
   const navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
@@ -37,7 +37,7 @@ const PlacesFormPage = () => {
         setCheckIn(data.checkIn);
         setCheckOut(data.checkOut);
         setMaxGuests(data.maxGuests);
-        setPrice(data.price)
+        setPrice(data.price);
       });
     }
   }, [redirect, id]);
