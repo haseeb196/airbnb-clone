@@ -4,12 +4,14 @@ const cors = require("cors");
 const User = require("./models/user");
 const app = express();
 const fs = require("fs");
+const Booking = require("./models/Booking");
 const multer = require("multer");
 const download = require("image-downloader");
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const Place = require("./models/Place");
+
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
@@ -194,4 +196,40 @@ app.put("/places", async (req, res) => {
 app.get("/places", async (req, res) => {
   res.json(await Place.find());
 });
+
+app.post("/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+  const { checkIn, checkOut, place, numberOfGuests, name, phone, price } =
+    req.body;
+  Booking.create({
+    checkIn,
+    user: userData.id,
+    checkOut,
+    place,
+    numberOfGuests,
+    name,
+    phone,
+    price,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+const getUserDataFromToken = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+};
+
+app.get("/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+  res.json(await Booking.find({user: userData.id}).populate('place'));
+});
+
 app.listen(3000);

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
+import BookingPage from '../components/BookingPage';
 import PlacePage from '../components/PlacePage';
 import PlacesFormPage from '../components/PlacesFormPage';
 import PlacesPage from '../components/PlacesPage';
 import { UserContextProvider } from '../components/UserContext';
 import './App.css';
 import Layout from './Layout';
+import BookingsPage from './Pages/BookingsPage';
 import IndexPage from './Pages/IndexPage';
 import LoginPage from './Pages/LoginPage';
 import ProfilePage from './Pages/ProfilePage';
@@ -52,6 +54,14 @@ function App() {
           <Route
             path="/place/:id"
             element={<PlacePage />}
+          />
+          <Route
+            path="/account/bookings"
+            element={<BookingsPage />}
+          />
+          <Route
+            path="/account/bookings/:id"
+            element={<BookingPage />}
           />
         </Route>
       </Routes>
